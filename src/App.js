@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./App.less";
 import { connect } from "react-redux";
-import { Menu, Input, Form, Button, Alert } from "antd";
+import { Menu, Input, Form, Button, Alert, Checkbox } from "antd";
 
 import { createFolder, addItem } from "./store/actions/index";
 
@@ -54,7 +54,9 @@ function App(props) {
           >
             {folder.items.map((item) => (
               <Menu.Item key={`${item.id}-${item.title}-${item.dateCreated}`}>
-                {item.title}
+                <Checkbox onChange={() => props.toggleCompleted(folder.id, item.id)} checked={item.completed}>
+                  {item.title}
+                </Checkbox>
               </Menu.Item>
             ))}
             <Menu.Item>
@@ -109,6 +111,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     createFolder: (title) => dispatch(createFolder(title)),
     addItem: (folderId, itemTitle) => dispatch(addItem(folderId, itemTitle)),
+    toggleCompleted: (folderId, itemId) => dispatch({type: "TOGGLE_ITEM", payload: {folderId: folderId, itemId: itemId}})
   };
 };
 
