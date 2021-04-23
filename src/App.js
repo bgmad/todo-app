@@ -6,7 +6,8 @@ import { Menu, Input, Form, Button, Alert } from "antd";
 import { createFolder } from "./store/actions/index";
 
 function App(props) {
-  const [error, setError] = useState(false);
+  const [folderError, setFolderError] = useState(false);
+  const [itemError, setItemError] = useState(false);
 
   const handleCreateFolder = (value) => {
     console.log(value);
@@ -14,9 +15,9 @@ function App(props) {
   };
 
   const handleFolderFail = (error) => {
-    setError(true);
+    setFolderError(true);
     setTimeout(() => {
-      setError(false);
+      setFolderError(false);
     }, 10 * 1000);
     console.log(error);
   };
@@ -29,11 +30,17 @@ function App(props) {
   }
 
   const handleAddItemFail = error => {
+    setItemError(true);
+    setTimeout(() => {
+      setItemError(false);
+    }, 10 * 1000);
     console.log(error);
   }
 
   return (
     <div>
+      {itemError && <Alert message="Item title needed" type="error" showIcon style={{position: "sticky", top: "0px", left: "0px", zIndex: "5"}}/>}
+      {folderError && <Alert message="Folder title needed" type="error" showIcon style={{position: "sticky", top: "0px", left: "0px", zIndex: "5"}}/>}
       <Menu
         style={{ width: "100%" }}
         defaultSelectedKeys={["1"]}
@@ -51,7 +58,6 @@ function App(props) {
               </Menu.Item>
             ))}
             <Menu.Item>
-              {/* <Button onClick={() => props.addItem(folder.id, "new item")} type="primary">add item</Button> */}
               <Form
                 onFinish={handleAddItem}
                 onFinishFailed={handleAddItemFail}
@@ -62,7 +68,7 @@ function App(props) {
                   rules={[{ required: true }]}
                   noStyle={true}
                 >
-                  <Input placeholder="New folder" style={{ height: "40px" }} />
+                  <Input placeholder="Add item" style={{ height: "40px" }} />
                 </Form.Item>
                 <Form.Item>
                   <Button htmlType="submit" type="primary">
@@ -71,6 +77,11 @@ function App(props) {
                 </Form.Item>
               </Form>
             </Menu.Item>
+            {/* {itemError && 
+              <Form.Item>
+                <Alert message="Item title needed" type="error" showIcon />
+              </Form.Item>
+            } */}
           </Menu.SubMenu>
         ))}
         <Menu.Item disabled={true}>
@@ -90,7 +101,6 @@ function App(props) {
           </Form>
         </Menu.Item>
       </Menu>
-      {error && <Alert message="Folder title needed" type="error" showIcon />}
     </div>
   );
 }
