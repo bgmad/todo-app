@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import "./App.less";
 import { connect } from "react-redux";
-import { Menu, Input, Form, Button, Alert } from "antd";
+import { Menu, Input, Form, Button, Alert, Checkbox } from "antd";
 
-import { createFolder } from "./store/actions/index";
+import { createFolder, addItem } from "./store/actions/index";
 
 function App(props) {
   const [folderError, setFolderError] = useState(false);
@@ -54,7 +54,9 @@ function App(props) {
           >
             {folder.items.map((item) => (
               <Menu.Item key={`${item.id}-${item.title}-${item.dateCreated}`}>
-                {item.title}
+                <Checkbox onChange={() => props.toggleCompleted(folder.id, item.id)} checked={item.completed}>
+                  {item.title}
+                </Checkbox>
               </Menu.Item>
             ))}
             <Menu.Item>
@@ -77,11 +79,6 @@ function App(props) {
                 </Form.Item>
               </Form>
             </Menu.Item>
-            {/* {itemError && 
-              <Form.Item>
-                <Alert message="Item title needed" type="error" showIcon />
-              </Form.Item>
-            } */}
           </Menu.SubMenu>
         ))}
         <Menu.Item disabled={true}>
@@ -113,11 +110,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     createFolder: (title) => dispatch(createFolder(title)),
-    addItem: (folderId, itemTitle) =>
-      dispatch({
-        type: "ADD_ITEM",
-        payload: { id: folderId, title: itemTitle },
-      }),
+    addItem: (folderId, itemTitle) => dispatch(addItem(folderId, itemTitle)),
+    toggleCompleted: (folderId, itemId) => dispatch({type: "TOGGLE_ITEM", payload: {folderId: folderId, itemId: itemId}})
   };
 };
 

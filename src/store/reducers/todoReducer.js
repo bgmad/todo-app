@@ -9,9 +9,38 @@ const todoReducer = (state = initialState, action) => {
         case ("ADD_ITEM"):
             return state.map(folder => {
                 if(folder.id === action.payload.id) {
-                    return {...folder, items: [...folder.items, {title: action.payload.title, id: folder.items.length, dateCreated: new Date()}]}
+                    return {
+                        ...folder, 
+                        items: [
+                            ...folder.items, 
+                            {
+                                title: action.payload.title, 
+                                id: folder.items.length, 
+                                completed: false,
+                                dateCreated: new Date()
+                            }
+                        ]
+                    }
                 }
                 return folder;
+            });
+        case ("TOGGLE_ITEM"):
+            return state.map(folder => {
+                if(folder.id === action.payload.folderId) { // folderId
+                    return {
+                        ...folder,
+                        items: folder.items.map(item => {
+                            if(item.id === action.payload.itemId) { //itemId
+                                return {
+                                    ...item,
+                                    completed: !item.completed
+                                }
+                            }
+                            return item;
+                        })
+                    }
+                }
+                return folder
             })
         default: return state;
     }
