@@ -24,13 +24,13 @@ const todoReducer = (state = initialState, action) => {
                 }
                 return folder;
             });
-        case ("TOGGLE_ITEM"):
+        case ("TOGGLE_COMPLETED"):
             return state.map(folder => {
-                if(folder.id === action.payload.folderId) { // folderId
+                if(folder.id === action.payload.folderId) {
                     return {
                         ...folder,
                         items: folder.items.map(item => {
-                            if(item.id === action.payload.itemId) { //itemId
+                            if(item.id === action.payload.itemId) {
                                 return {
                                     ...item,
                                     completed: !item.completed

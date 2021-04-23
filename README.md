@@ -1,3 +1,19 @@
+# Retrospective
+
+The reason that I did everything inside of App.js is that when I tried to refactor Menu.SubMenu, the alignment was off. I knew that this would end up being an issue because I knew that I would have to nest mappings inside of something that I was already mapping (line 65-74). This is honestly atrocious and I would not like to do this again.
+
+One thing I think I could refactor is the forms. Right night there are two form components being used. One is used inside of each folder while one is to create a folder. I could very easily refactor these out. This would also help organising and naming the handler functions and the error states -- if each form was in a seperate file, I could've used more standardised names for these things. 
+
+As much as I hate prop drilling, That might have been a better solution for something like this. I had to do some mental gymnastics in the reducer to make everything work the way it should. The problem with this is that the code in the reducer is not very readable. I mean, it makes sense and it works but it's very ugly code and if another developer saw it they would close the file right away.
+
+I kept all of my action types in ./store/actions/index because I knew that moving these actions around wouldn't be too hard. Ideally, this would be organised a bit better but considering that I only have 3 actions right now, I don't think this is a problem.
+
+This was the first time that I used this method of dispatching methods. It was good to change it up and research different ways of doing it (I saw at least one more different way of doing it). I don't mind this way of doing it, it just seems very repetitive and verbose. I felt like I was writing the same function names and parameters over and over. 
+
+The biggest thing, after looking at the antd components for a bit longer, I saw that they have a Tree component which does everything that I did in about 50% less code. Even if I did decide I wanted to stick with the Menu component, I think that using the List component inside of it would've made iterating through each item much easier. I've used the List component before and it was pretty good.
+
+---
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

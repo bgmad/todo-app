@@ -8,3 +8,10 @@ export const addItem = (folderId, itemTitle) => {
     payload: { id: folderId, title: itemTitle },
   };
 };
+
+export const toggleCompleted = (folderId, itemId) => {
+    return {
+        type: "TOGGLE_COMPLETED",
+        payload: { folderId: folderId, itemId: itemId },
+    }
+}
