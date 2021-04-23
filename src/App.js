@@ -3,14 +3,13 @@ import "./App.less";
 import { connect } from "react-redux";
 import { Menu, Input, Form, Button, Alert, Checkbox } from "antd";
 
-import { createFolder, addItem } from "./store/actions/index";
+import { createFolder, addItem, toggleCompleted } from "./store/actions/index";
 
 function App(props) {
   const [folderError, setFolderError] = useState(false);
   const [itemError, setItemError] = useState(false);
 
   const handleCreateFolder = (value) => {
-    console.log(value);
     props.createFolder(value.title);
   };
 
@@ -19,28 +18,39 @@ function App(props) {
     setTimeout(() => {
       setFolderError(false);
     }, 10 * 1000);
-    console.log(error);
   };
 
   const handleAddItem = (value) => {
     const folderId = value.title.length - 1;
     const title = value.title[folderId];
     props.addItem(folderId, title);
-    console.log(folderId, title);
-  }
+  };
 
-  const handleAddItemFail = error => {
+  const handleAddItemFail = (error) => {
     setItemError(true);
     setTimeout(() => {
       setItemError(false);
     }, 10 * 1000);
-    console.log(error);
-  }
+  };
 
   return (
     <div>
-      {itemError && <Alert message="Item title needed" type="error" showIcon style={{position: "sticky", top: "0px", left: "0px", zIndex: "5"}}/>}
-      {folderError && <Alert message="Folder title needed" type="error" showIcon style={{position: "sticky", top: "0px", left: "0px", zIndex: "5"}}/>}
+      {itemError && (
+        <Alert
+          message="Item title needed"
+          type="error"
+          showIcon
+          style={{ position: "sticky", top: "0px", left: "0px", zIndex: "5" }}
+        />
+      )}
+      {folderError && (
+        <Alert
+          message="Folder title needed"
+          type="error"
+          showIcon
+          style={{ position: "sticky", top: "0px", left: "0px", zIndex: "5" }}
+        />
+      )}
       <Menu
         style={{ width: "100%" }}
         defaultSelectedKeys={["1"]}
@@ -54,7 +64,10 @@ function App(props) {
           >
             {folder.items.map((item) => (
               <Menu.Item key={`${item.id}-${item.title}-${item.dateCreated}`}>
-                <Checkbox onChange={() => props.toggleCompleted(folder.id, item.id)} checked={item.completed}>
+                <Checkbox
+                  onChange={() => props.toggleCompleted(folder.id, item.id)}
+                  checked={item.completed}
+                >
                   {item.title}
                 </Checkbox>
               </Menu.Item>
@@ -63,7 +76,7 @@ function App(props) {
               <Form
                 onFinish={handleAddItem}
                 onFinishFailed={handleAddItemFail}
-                style={{ display: "flex" }}
+                style={{ display: "flex", paddingRight: "24px" }}
               >
                 <Form.Item
                   name={["title", folder.id]}
@@ -111,7 +124,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     createFolder: (title) => dispatch(createFolder(title)),
     addItem: (folderId, itemTitle) => dispatch(addItem(folderId, itemTitle)),
-    toggleCompleted: (folderId, itemId) => dispatch({type: "TOGGLE_ITEM", payload: {folderId: folderId, itemId: itemId}})
+    toggleCompleted: (folderId, itemId) => dispatch(toggleCompleted(folderId, itemId)),
   };
 };
 
