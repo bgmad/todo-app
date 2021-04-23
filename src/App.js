@@ -3,7 +3,7 @@ import "./App.less";
 import { connect } from "react-redux";
 import { Menu, Input, Form, Button, Alert } from "antd";
 
-import { createFolder } from "./store/actions/index";
+import { createFolder, addItem } from "./store/actions/index";
 
 function App(props) {
   const [folderError, setFolderError] = useState(false);
@@ -77,11 +77,6 @@ function App(props) {
                 </Form.Item>
               </Form>
             </Menu.Item>
-            {/* {itemError && 
-              <Form.Item>
-                <Alert message="Item title needed" type="error" showIcon />
-              </Form.Item>
-            } */}
           </Menu.SubMenu>
         ))}
         <Menu.Item disabled={true}>
@@ -113,11 +108,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     createFolder: (title) => dispatch(createFolder(title)),
-    addItem: (folderId, itemTitle) =>
-      dispatch({
-        type: "ADD_ITEM",
-        payload: { id: folderId, title: itemTitle },
-      }),
+    addItem: (folderId, itemTitle) => dispatch(addItem(folderId, itemTitle)),
   };
 };
 
